@@ -1,0 +1,98 @@
+﻿@page
+
+    <h2 class="content-block">in developing</h2>
+    <body class="dx-viewport">
+        <div id="Accordion">
+            <div data-options="dxTemplate: { name: 'low Stock' }">
+                <div class="dx-list"></div>
+            </div>
+            <div data-options="dxTemplate: { name: 'SecondItem' }">
+                <div class="dataGrid"></div>
+            </div>
+            @*<div data-options="dxTemplate: { name: 'next' }">
+                <div class="dataGrid"></div>
+            </div>*@
+        </div>
+    </body>
+
+    <script>
+        $(function () {
+
+            var store = DevExpress.data.AspNet.createStore({
+                loadUrl: "https://192.168.8.114:4001/api/Stocks",
+            });
+
+            var listData = new DevExpress.data.DataSource({
+
+                store: store,
+                paginate: true,
+                pageSize: 1,
+                sort: "STOCK_ID",
+                group: "COMPONENTS_ID",
+                filter: [['IGNORE', '=', null], "and", ["QUANTITY", "<=", 10]],
+            });
+
+            var data = [{
+                template: 'low Stock',
+
+            }]
+
+            $("#Accordion").dxAccordion({
+                collapsible: true,
+                dataSource: data,
+
+                itemTitleTemplate: 'Low Stock Monitoring',
+
+
+
+            });
+
+            $(".dx-list").dxList({
+                dataSource: listData,
+                map: function (groupedItem) {
+                    let overallCount = 0;
+                    groupedItem.items.forEach(function (item) {
+                        overallCount += item.count;
+                    });
+                    return $.extend(groupedItem, { overallCount: overallCount })
+                },
+                itemTemplate: function (data, _, element) {
+
+                    //var price = formatCurrency(data.UnitPrice);
+                    return $("<div>")
+                        .append($("<div>").text(data.PART_NUMBER))
+                        //.append($("<div>").text(data.ProductName))
+                        .append($("<div>").text(data.IGNORE))
+                        .append($("<b>").text("Quantitiy:" + data.QUANTITY))
+                       
+
+
+                },
+
+                grouped: true,
+                aExpandAll: false,
+                groupTemplate: function (Data, _, groupElement) {
+                    groupElement.append(
+                        $("<p>").text(Data.key + " | " + Data.overallCount)
+                    )
+                },
+                collapsibleGroups: true,
+                selectionMode: "multiple",
+                showSelectionControls: true,
+                pageLoadMode: "scrollBottom",
+                height: 600,
+
+                outerWidth: 100
+            });
+
+            //$(".dataGrid").dxDataGrid({
+            //    dataSource: [
+            //        { text: "Item 1", id: 1 },
+            //        { text: "Item 2", id: 2 },
+            //    ]
+            //});
+
+
+
+        });
+    </script>

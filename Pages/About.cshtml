@@ -1,0 +1,107 @@
+
+@page
+<head>
+    <script defer src="/css/all.js"></script> <!--load all styles -->
+</head>
+@using JPGStockServer.Entities
+
+<h2 class="content-block">in developing</h2>
+
+
+<body class="dx-viewport">
+    <div id="Accordion">
+        <div data-options="dxTemplate: { name: 'FirstItem' }">
+            <div class="dx-list"></div>
+        </div>
+        <div data-options="dxTemplate: { name: 'SecondItem' }">
+            <div class="dataGrid"></div>
+        </div>
+        @*<div data-options="dxTemplate: { name: 'next' }">
+            <div class="dataGrid"></div>
+        </div>*@
+    </div>
+</body>
+
+<script>
+    $(function () {
+
+        var store = DevExpress.data.AspNet.createStore({
+            loadUrl: "https://192.168.8.114:4001/api/Stocks",
+        });
+
+        var listData = new DevExpress.data.DataSource({
+
+            store: store,
+            paginate: true,
+            pageSize: 1,
+            sort: "STOCK_ID",
+            group: "COMPONENTS_ID",
+            filter: [['IGNORE', '=', null], "and", ["QUANTITY", "<=", 10]],
+        });
+
+        var data = [{
+            template: 'FirstItem',
+
+        }, {
+            template: 'SecondItem',
+            }]
+
+        $("#Accordion").dxAccordion({
+            collapsible: true,
+            dataSource: data,
+
+            itemTitleTemplate: 'Grid',
+            
+
+
+        });
+
+        //$(".dx-list").dxList({
+        //    dataSource: listData,
+        //    map: function (groupedItem) {
+        //        let overallCount = 0;
+        //        groupedItem.items.forEach(function (item) {
+        //            overallCount += item.count;
+        //        });
+        //        return $.extend(groupedItem, { overallCount: overallCount })
+        //    },
+        //    itemTemplate: function (data, _, element) {
+
+        //        //var price = formatCurrency(data.UnitPrice);
+        //        return $("<div>")
+        //            .append($("<div>").text(data.PART_NUMBER))
+        //            //.append($("<div>").text(data.ProductName))
+        //            .append($("<div>").text(data.IGNORE))
+        //            .append($("<b>").text("Quantitiy:" + data.QUANTITY))
+        //            .append($("<p>").text(data.PART_NUMBER + " | " + data.count).css("margin", 0))
+
+
+        //    },
+
+        //    grouped: true,
+        //    aExpandAll: false,
+        //    groupTemplate: function (Data, _, groupElement) {
+        //        groupElement.append(
+        //            $("<p>").text(Data.key + " | " + Data.overallCount)
+        //        )
+        //    },
+        //    collapsibleGroups: true,
+        //    selectionMode: "multiple",
+        //    showSelectionControls: true,
+        //    pageLoadMode: "scrollBottom",
+        //    height: 600,
+
+        //    outerWidth: 100
+        //});
+
+        $(".dataGrid").dxDataGrid({
+            dataSource: [
+                { text: "Item 1", id: 1 },
+                { text: "Item 2", id: 2 },
+            ]
+        });
+
+
+
+    });
+</script>

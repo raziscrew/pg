@@ -1,6 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using System.Net;
+using Microsoft.Extensions.Logging;
 
 namespace JPGStockServer
 {
@@ -13,28 +18,8 @@ namespace JPGStockServer
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    var host = Dns.GetHostEntry("Stock.Jess");
-                    webBuilder.ConfigureKestrel(opt =>
-                    {
-
-
-                        opt.Listen(host.AddressList[0], 4000);
-                        opt.Listen(host.AddressList[0], 4001, listOpt =>
-                        {
-                            listOpt.UseHttps();
-                        });
-                    });
+                .ConfigureWebHostDefaults(webBuilder => {
                     webBuilder.UseStartup<Startup>();
-
-
                 });
-        public static class HostConfig
-        {
-            public static string CertPath { get; set; }
-            public static string CertPassword { get; set; }
-        }
     }
 }

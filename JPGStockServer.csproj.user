@@ -4,7 +4,8 @@
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup>
-    <ActiveDebugProfile>JPGStockServer</ActiveDebugProfile>
-    <NameOfLastUsedPublishProfile>FolderProfile</NameOfLastUsedPublishProfile>
+    <ActiveDebugProfile>IIS Express</ActiveDebugProfile>
+    <NameOfLastUsedPublishProfile>C:\Users\razis\Desktop\pg\.github\workflows\JessStockPG1.yml</NameOfLastUsedPublishProfile>
+    <DismissedDevExtremeVersion>21.2.6</DismissedDevExtremeVersion>
   </PropertyGroup>
 </Project>
